@@ -36,11 +36,25 @@ export default class BinarySearchTree {
 
     // @todo - YOU MUST DEFINE THIS METHOD
     putValue(key, value) {
+        
 
     }
 
     // @todo - YOU MUST DEFINE THIS METHOD
     getValue(key) {
+        let temp = root;
+        
+        while(temp != null){
+            if(temp.key == key){
+                return temp.data;
+            }
+            else if(temp.key < key){
+                temp = temp.right;
+            }
+            else{
+                temp = temp.left;
+            }
+        }
         return null;
     }
 
