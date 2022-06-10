@@ -47,87 +47,93 @@ export default class OpenAddressHashTable {
     
     // @todo - YOU MUST DEFINE THIS METHOD
     getValue(key) {
+        let index = this.hashCode(key);
+
+        let count = 0;
+
+        while (count < this.length){
+
+            let test = this.hashTable[index];
+
+            if(test == null){
+                return null;
+            }
+            else if(test.key.localeCompare(key) == 0){
+                return test.value;
+            }
+            index++
+            if(index == this.length){
+                index = 0;
+            }
+            count++;
+        }
         return null;
+    }
+
+    
+    
+    // @todo - YOU MUST DEFINE THIS METHOD
+    removeValue(key) {
+
+    
     }
     
     // @todo - YOU MUST DEFINE THIS METHOD
-    removeValue(key) {   
-    }
-    rehash(oldHash, newHash, newItemObject){
-        for(let i =0; i< this.length/2; i++){
-            let index = this.hashCode(oldHash[i].key);
-            if(newHash[index] == null){
-                newHash[index] = oldHash[i];
-            }
-            else{
-                let z = index;
-                while(newHash[z] != null){
-                    z = (z+1) % this.length;
-                }
-                if(newHash[z] == null){
-                    newHash[z] = oldHash[i];
-                }
-            }
-        }
-        let index1 = this.hashCode(newItemObject.key);
-        if(newHash[index1] == null){
-            newHash[index1] = newItemObject;
-            this.size++;
-        }
-        else{
-            let a = index1;
-            while(newHash[a] !=null){
-
-                a = (a+1) % this.length;
-
-            }
-            if(newHash[a] == null){
-                newHash[a] = newItemObject;
-                this.size++;
-            }
-        }
-        oldHash = newHash;
-        
-    }    
-
-    // @todo - YOU MUST DEFINE THIS METHOD
     putValue(key, item) {
 
-        let index = this.hashCode(key);
+        let index = this.hashCode(key); 
+            let count = 0;
+            while (count < this.length) {
+                let test = this.hashTable[index];
 
-        let newItem = new KeyValuePair(key, item);
+                if (test == null) {
 
-        for(let i =0; i<this.length; i++){
-            if(this.hashTable[i] != null){
-                if(this.hashTable[i].key == key){
-                    this.hashTable[i] = newItem;
+                    this.hashTable[index] = new KeyValuePair(key, item);
+                    this.size++;
+
                     return;
                 }
+                else if ((test.key).localeCompare(key) == 0) {
+
+                    this.hashTable[index].value = item;
+                    size++;
+                    return;
+                }
+
+                index++;
+                if (index == this.length)
+                    index = 0;
+
+                count++;
+            }
+            
+            let temp = this.hashTable;
+            this.length = this.length*2;      
+
+            this.hashTable = new Array(length);
+
+            for (let i = 0; i < this.length; i++) {
+                this.hashTable[i] = null;
             }
 
-        }
-        if(this.size == this.length){
-            this.length = this.length*2;
-            let newHashTable = new Array(this.length);
-            this.rehash(this.hashTable,newHashTable,newItem);
+            let numToCopy = this.size;
+            this.size = 0;
 
-        }
-        if(this.hashTable[index] == null){
-            this.hashTable[index] = newItem;
-            this.size++;
-        }
-        else if(this.hashTable[index] != null && this.size != this.length){
-           let i = index;
-            while(this.hashTable[i] != null){
-                i = (i+1) % this.length;
+            for (let i = 0; i < numToCopy; i++) {
+
+                let testPair = temp[i];
+
+                let keyToMove = testPair.key;
+
+                let valueToMove = testPair.value;
+
+                this.putValue(keyToMove, valueToMove);
             }
-            if(this.hashTable[i] == null){
-                this.hashTable[i] = newItem;
-                this.size++;
-                return;
-            }
+            
+            this.putValue(key, item);
         }
-    }
+
+        
 
     
     toString() {
