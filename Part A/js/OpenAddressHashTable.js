@@ -70,10 +70,73 @@ export default class OpenAddressHashTable {
         return null;
     }
 
+    rehashForRemove(){
+        let temp = new Array(length);
+
+        for(let i=0; i< this.length; i++){
+            temp[i] = nullptr;
+
+        }
+        for(let i=0; i< this.length; i++){
+
+            if(this.hashTable[i] != null){
+                let index = this.hashCode(hashTable[i].key);
+                if(temp[index] == null){
+                    temp[index] = this.hashTable[i];
+                }
+                else{
+                    let z = index;
+                    while(temp[z] != null){
+
+                        z= (z+1) % this.length;
+                    }
+                        temp[z] = this.hashTable[i];
+                }
+            }
+        }
+        hashTable = temp;
+    }
+
     
     
     // @todo - YOU MUST DEFINE THIS METHOD
     removeValue(key) {
+
+        let index = this.hashCode(key);
+        if(this.hashTable[index] == null){ 
+            for(let i = index; i < this.length; i = (i+1) % this.length){
+                if(this.hashTable[index] != null && this.hashTable[index].key == key){
+                    this.hashTable[index] == null;
+                    this.size--;
+                    this.rehashForRemove();
+                    return;
+
+                }
+            }
+        }
+        if(this.hashTable[index] != null) {
+            if (this.hashTable[index].key == key) {
+
+                this.hashTable[index] = null;
+                this.size--;
+                this.rehashForRemove();
+
+            } else {
+                let a = index;
+                for (let temp = a; temp < this.length; temp = (temp + 1) % this.length) {
+                    if (this.hashTable[temp] != null) {
+                        if (hashTable[temp].key == key) {
+                            a = temp;
+                            break;
+                        }
+                    }
+                }
+                hashTable[a] = null;
+                this.size--;
+                this.rehashForRemove();
+
+            }
+        }
 
     
     }
