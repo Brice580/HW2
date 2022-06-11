@@ -36,16 +36,16 @@ export default class BinarySearchTree {
 
     searchForDuplicateKey(key, node){
         while(node != null){
-            if(node.key == key){
-                return 1;
+            if(node.key === key){
+                return node;
             }
-            else if(node.key.localeCompare(key) < 0){
+            else if(node.key < key){
                 node = node.right;
             }
             else
                 node = node.left;
         }
-        return 0;
+        return null;
 
     }
 
@@ -55,13 +55,14 @@ export default class BinarySearchTree {
 
         let condition = true;
         let cursorInit = this.root;
+        let temp = this.searchForDuplicateKey(key, cursorInit);
 
-        if(this.searchForDuplicateKey(key,cursorInit) == 1){
-            cursorInit.data = value;
+        if(temp != null){
+            temp.data = value;
             return;
         }
 
-        if(this.root == null){
+        if(this.root === null){
             this.root = new Node(key, value, null, null, null);
             this.size++;
         }
@@ -70,7 +71,7 @@ export default class BinarySearchTree {
             let cursor = this.root;
             while(condition){
                 if(cursor.key > key){
-                    if(cursor.left == null){
+                    if(cursor.left === null){
 
                         cursor.left = new Node(key, value, cursor, null, null);
                         this.size++;
@@ -81,14 +82,14 @@ export default class BinarySearchTree {
                         cursor = cursor.left;
                 }
                 else if(cursor.key < key){
-                    if(cursor.right == null){
+                    if(cursor.right === null){
 
                         cursor.right= new Node(key,value,cursor, null, null);
                         this.size++;
                         condition = false;
                     }
                     else
-                        cursor =cursor.right;
+                        cursor = cursor.right;
                 }
                 else
                     condition = false;
@@ -101,17 +102,20 @@ export default class BinarySearchTree {
 
     // @todo - YOU MUST DEFINE THIS METHOD
     getValue(key) {
-        let temp = this.root;
+        let cursor = this.root;
         
-        while(temp != null){
-            if(temp.key.compareTo(key) == 0){
-                return temp.data;
+        while(cursor != null){
+            if(cursor.key === key){
+                return cursor.data;
+
             }
-            else if(temp.key.compareTo(key)<0){
-                temp = temp.right;
+            else if(cursor.key < key){
+
+                cursor = cursor.right;
             }
             else{
-                temp = temp.left
+
+                cursor = cursor.left
             }
         }
         return null;
@@ -119,6 +123,9 @@ export default class BinarySearchTree {
 
     // @todo - YOU MUST DEFINE THIS METHOD
     removeValue(key) {
+
+        
+
 
 
     }
