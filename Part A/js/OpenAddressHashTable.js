@@ -58,7 +58,7 @@ export default class OpenAddressHashTable {
             if(test == null){
                 return null;
             }
-            else if(test.key.localeCompare(key) == 0){
+            else if(test.key == key){
                 return test.value;
             }
             index++
@@ -103,10 +103,10 @@ export default class OpenAddressHashTable {
     removeValue(key) {
 
         let index = this.hashCode(key);
-        if(this.hashTable[index] == null){ 
+        if(this.hashTable[index] === null){ 
             for(let i = index; i < this.length; i = (i+1) % this.length){
-                if(this.hashTable[index] != null && this.hashTable[index].key == key){
-                    this.hashTable[index] == null;
+                if(this.hashTable[index] != null && this.hashTable[index].key === key){
+                    this.hashTable[index] = null;
                     this.size--;
                     this.rehashForRemove();
                     return;
@@ -125,7 +125,7 @@ export default class OpenAddressHashTable {
                 let a = index;
                 for (let temp = a; temp < this.length; temp = (temp + 1) % this.length) {
                     if (this.hashTable[temp] != null) {
-                        if (this.hashTable[temp].key == key) {
+                        if (this.hashTable[temp].key === key) {
                             a = temp;
                             break;
                         }
@@ -140,60 +140,96 @@ export default class OpenAddressHashTable {
 
     
     }
+    rehash(item2, newItem){
+
+        for(let i = 0; i< this.length; i++){
+            item2[i] = null;
+        }
+        for(let i =0; i< this.length/2; i++) {
+            let index = this.hashCode(this.hashTable[i].key);  //the new index with the new length of the array
+            if (item2[index] == null) {
+            item2[index] = this.hashTable[i]; //COPY THE VALUE AT THE INDEX IN ORIGINAL ARRAY INTO PROPER SPOT
+
+        }
+            else{
+                let z = index;
+                while(item2[z] != null){
+
+                    z= (z+1) % this.length;
+                }
+                if(item2[z] == null) {
+                    item2[z] = this.hashTable[i];
+
+                }
+            }
+        }
+
+        let index1 = this.hashCode(newItem.key);
+        if(item2[index1] == null){
+            item2[index1] = newItem;
+            this.size++;
+
+        }
+        else{
+            let a = index1;
+            while(item2[a] != null){
+
+                a= (a+1) % this.length;
+            }
+            if(item2[a] == null) {
+                item2[a] = newItem;
+                this.size++;
+
+            }
+        }
+        return item2;
+
+    }
     
     // @todo - YOU MUST DEFINE THIS METHOD
     putValue(key, item) {
 
-        let index = this.hashCode(key); 
-            let count = 0;
-            while (count < this.length) {
-                let test = this.hashTable[index];
+        let index = this.hashCode(key);
 
-                if (test == null) {
+        let newItem = new KeyValuePair(key, item);
 
-                    this.hashTable[index] = new KeyValuePair(key, item);
-                    this.size++;
-
-                    return;
-                }
-                else if ((test.key).localeCompare(key) == 0) {
-
-                    this.hashTable[index].value = item;
-                    this.size++;
-                    return;
-                }
-
-                index++;
-                if (index == this.length)
-                    index = 0;
-
-                count++;
+        //CHECKS IF THE KEY ALREADY EXISTS
+        for(let i=0; i < this.length; i++) {
+            if (this.hashTable[i] != null) {
+                 if (this.hashTable[i].key === key) {
+                      this.hashTable[i] = newItem;
+                     return;
             }
-            
-            let temp = this.hashTable;
-            this.length = this.length*2;      
+        }
+        }
 
-            this.hashTable = new Array(length);
+        if(this.size === this.length){
 
-            for (let i = 0; i < this.length; i++) {
-                this.hashTable[i] = null;
+            this.length = this.length *2;
+            let newHashTable = new Array(this.length);
+            this.hashTable = this.rehash(newHashTable, newItem);
+            return;
+
+
+        }
+
+        if(this.hashTable[index] == null){
+            this.hashTable[index] = newItem;
+            this.size++;
+        }
+        else if(this.hashTable[index] != null && this.size != this.length){
+            let i = index;
+            while(this.hashTable[i] != null){
+
+                i= (i+1) % this.length;
             }
-
-            let numToCopy = this.size;
-            this.size = 0;
-
-            for (let i = 0; i < numToCopy; i++) {
-
-                let testPair = temp[i];
-
-                let keyToMove = testPair.key;
-
-                let valueToMove = testPair.value;
-
-                this.putValue(keyToMove, valueToMove);
+            if(this.hashTable[i] == null) {
+                this.hashTable[i] = newItem;
+                this.size++;
+                return;
             }
-            
-            this.putValue(key, item);
+        }
+
         }
 
         
