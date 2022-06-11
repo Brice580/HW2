@@ -123,6 +123,88 @@ export default class BinarySearchTree {
 
     // @todo - YOU MUST DEFINE THIS METHOD
     removeValue(key) {
+        let cursor = this.root;
+
+            let condition = false;
+            while (!condition) {
+
+                if (key === cursor.key) {
+
+                    if (cursor.left != null) {
+
+                        let largest = cursor.left;
+                        while (largest.right != null) {
+                            largest = largest.right;
+                        }
+                       
+                        cursor.key = largest.key;
+
+                        cursor.data = largest.data;
+                        
+                        if (largest === largest.parent.left) {
+                            largest.parent.left = largest.left;
+                        }
+                        else {
+
+                            largest.parent.right = largest.left;
+                        }
+                    }
+                    else if (cursor.right != null) {
+
+                        let smallest = cursor.right;
+                        while (smallest.left != null) {
+
+                            smallest = smallest.left;
+                        }
+                        
+                        cursor.key = smallest.key;
+                        cursor.data = smallest.data;
+                        
+                        if (smallest === smallest.parent.right) {
+                            smallest.parent.right = smallest.right;
+                        }
+                        else {
+                            smallest.parent.left = smallest.right;
+                        }
+                    }
+                    else {
+
+                        if (cursor === this.root) {
+
+                            this.root = null;
+                        }
+
+                        else if (cursor === cursor.parent.left) {
+                            cursor.parent.left = null;
+
+                        }
+
+
+                        else {
+                            cursor.parent.right = null;
+
+                        }
+                    }
+                    this.size--;
+                    condition = true;
+                }
+                else if (key < cursor.key) {
+                    if (cursor.left === null) {
+                        return;
+                    }
+                    else {
+                        cursor = cursor.left;
+                    }
+                }
+                else {
+                    if (cursor.right === null) {
+                        return;
+                    }
+                    else {
+                        cursor = cursor.right;
+                    }
+                }
+            }
 
         
 
