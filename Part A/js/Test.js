@@ -1,3 +1,4 @@
+import { Undergraduate } from "../../Part A/js/People.js";
 import OpenAddressHashTable from "./OpenAddressHashTable.js";
 import { Person, Employee, Student } from "./People.js";
 
@@ -21,7 +22,51 @@ function addPersonToHashTable(person, hashTable) {
 
 let hashTable = new OpenAddressHashTable(NUM_BINS, KEY_LENGTH);
 
-// DEMONSTRATE ADDING VALUES TO THE HASH TABLE, WHICH INCLUDES THE NEED TO MAKE THE HASH TABLE BIGGER
+//Inserts at 3 different indexes
+
+addPersonToHashTable(new Student("AAAAAAAA", "George", "Harrison", 4.0), hashTable);
+addPersonToHashTable(new Person("BBBBBBBB", "Chuck", "Berry"), hashTable);
+addPersonToHashTable(new Person("CCCCCCCC", "Roger", "Waters"), hashTable);
+
+
+//replaces two of the previous indexex
+addPersonToHashTable(new Employee("CCCCCCCC", "Ringo", "Starr", 40000), hashTable);
+addPersonToHashTable(new Student("BBBBBBBB", "Jimi", "Hendrix", 3.6), hashTable);
+
+//gets the new replaced index values
+let p = hashTable.getValue("CCCCCCCC");
+console.log("\nget " + "CCCCCCCC" + ": " + p.toString() + "\n");
+p = hashTable.getValue("BBBBBBBB");
+console.log("\nget " + "BBBBBBBB" + ": " + p.toString() + "\n");
+
+
+//Fills the table up, making a new table double the size AND rehashs
+addPersonToHashTable(new Employee("DDDDDDDD", "Paul", "McCartney", 80000), hashTable);
+addPersonToHashTable(new Student("FFFFFFFF", "Mick", "Jagger", 3.5), hashTable);
+addPersonToHashTable(new Person("GGGGGGGG", "Chuck", "Berry"), hashTable);
+
+//add a new person after the table is resized
+addPersonToHashTable(new Person("ZZZZZZZZ", "Micheal", "Jordan"), hashTable);
+
+//remove a value which also rehashes elements into the array
+hashTable.removeValue("ZZZZZZZZ");
+printHashTable("\nAfter Removing Micheal Jordan", hashTable);
+
+//add undergraduates
+addPersonToHashTable(new Undergraduate("JJJJJJJJ", "Albert", "Einstien", 4.0, "U-4"), hashTable);
+addPersonToHashTable(new Undergraduate("KKKKKKKK", "Pit", "Bull", 4.0, "U-2"), hashTable);
+addPersonToHashTable(new Undergraduate("PQIEJDNS", "Mark", "Zuckerburg", 4.0, "U-4"), hashTable);
+addPersonToHashTable(new Undergraduate("ANSKIENS", "King", "TUT", 3.0, "U-1"), hashTable);
+
+
+//filled up the new hash table for remove testing
+hashTable.removeValue("PQIEJDNS");
+printHashTable("\nAfter Removing Mark", hashTable);
+hashTable.removeValue("ANSKIENS");
+printHashTable("\nAfter Removing tut", hashTable);
+
+
+/*// DEMONSTRATE ADDING VALUES TO THE HASH TABLE, WHICH INCLUDES THE NEED TO MAKE THE HASH TABLE BIGGER
 addPersonToHashTable(new Student(hashTable.generateKey(), "George", "Harrison", 4.0), hashTable);
 addPersonToHashTable(new Employee(hashTable.generateKey(), "Paul", "McCartney", 80000), hashTable);
 addPersonToHashTable(new Employee(hashTable.generateKey(), "Ringo", "Starr", 40000), hashTable);
@@ -61,4 +106,4 @@ hashTable.removeValue(cwKey);
 printHashTable("\nAfter Removing Keith Richards", hashTable);
 
 hashTable.removeValue(dgKey);
-printHashTable("\nAfter Removing Bill Withers", hashTable);
+printHashTable("\nAfter Removing Bill Withers", hashTable);*/
