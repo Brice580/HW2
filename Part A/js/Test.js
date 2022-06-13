@@ -65,6 +65,18 @@ printHashTable("\nAfter Removing Mark", hashTable);
 hashTable.removeValue("ANSKIENS");
 printHashTable("\nAfter Removing tut", hashTable);
 
+//key doesnt exist, program just returns, no changes done
+hashTable.removeValue("VVVVVVVV");
+printHashTable("\nAfter Removing nonexistent key", hashTable);
+
+
+hashTable.removeValue("HHHHHHHH");
+printHashTable("\nAfter Removing nonexistent key", hashTable);
+
+hashTable.removeValue("OOOOOOOO");
+printHashTable("\nAfter Removing nonexistent key", hashTable);
+
+
 
 /*// DEMONSTRATE ADDING VALUES TO THE HASH TABLE, WHICH INCLUDES THE NEED TO MAKE THE HASH TABLE BIGGER
 addPersonToHashTable(new Student(hashTable.generateKey(), "George", "Harrison", 4.0), hashTable);
