@@ -104,8 +104,13 @@ export default class OpenAddressHashTable {
 
         let index = this.hashCode(key);
         if(this.hashTable[index] === null){ 
+            let count =0;
             for(let i = index; i < this.length; i = (i+1) % this.length){
+                if(count === this.size){
+                    break;
+                }
                 if(this.hashTable[index] != null && this.hashTable[index].key === key){
+                    count++;
                     this.hashTable[index] = null;
                     this.size--;
                     this.rehashForRemove();
@@ -123,12 +128,18 @@ export default class OpenAddressHashTable {
 
             } else {
                 let a = index;
+                let count1 = 0;;
                 for (let temp = a; temp < this.length; temp = (temp + 1) % this.length) {
+                    if(count1 === this.size){
+                        return;
+                    }
                     if (this.hashTable[temp] != null) {
+
                         if (this.hashTable[temp].key === key) {
                             a = temp;
                             break;
                         }
+                        count1++;
                     }
                 }
                 this.hashTable[a] = null;
