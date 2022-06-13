@@ -18,8 +18,76 @@ function addPersonToBST(person, tree) {
     printBST("Current Binary Search Tree:", tree);
 }
 
+let CAR_TYPES = {
+    SEDAN: "SEDAN",
+     SUV: "SUV"
+  };
+  
+  let cars = new Array();
+  cars[CAR_TYPES.SEDAN] = "Saab";
+  cars[CAR_TYPES.SUV] = "Volvo";
+  console.log("There are " + cars.length + " cars");
+  console.log("The SUV is a " + cars[CAR_TYPES.SUV]);
+  
+
 let tree = new BinarySearchTree(KEY_LENGTH);
 
+addPersonToBST(new Student("FFFFFFFF", "George", "Harrison", 4.0), tree);
+addPersonToBST(new Employee("DDDDDDDD", "Paul", "McCartney", 80000), tree);
+addPersonToBST(new Employee("JJJJJJJJ", "Ringo", "Starr", 40000), tree);
+//Tree with 3 nodes one root, one left one right
+
+tree.removeValue("FFFFFFFF");
+printBST("test", tree);
+//REMOVE ROOT   
+
+addPersonToBST(new Person("CCCCCCCC", "Chuck", "Berry"), tree);
+//ADD Person left of root
+
+addPersonToBST(new Person("AAAAAAAA", "Roger", "Waters"), tree);
+//Left of previous added  node
+
+addPersonToBST(new Student("HHHHHHHH", "Jimi", "Hendrix", 3.6), tree);
+
+//left of roots right node
+
+tree.removeValue("DDDDDDDD");
+printBST("test", tree);
+//remove the root/node with two children
+
+tree.removeValue("JJJJJJJJ");
+printBST("test", tree);
+//remove the right of new root & remove node with one left child
+
+let p = tree.getValue("AAAAAAAA");
+console.log("\nget " + "AAAAAAAA" + ": " + p.toString() + "\n");
+//get right of node
+
+addPersonToBST(new Student("MMMMMMMM", "Mick", "Jagger", 3.5), tree);
+
+tree.removeValue("HHHHHHHH");
+printBST("test", tree);
+//remove node with only one right child
+
+addPersonToBST(new Employee("MMMMMMMM", "Paul", "McCartney", 80000), tree);
+//replace existing keys
+
+p = tree.getValue("MMMMMMMM");
+console.log("\nget " + "MMMMMMMM" + ": " + p.toString() + "\n");
+//get the value of the replaced node
+
+
+addPersonToBST(new Employee("ZZZZZZZZ", "Ringo", "Starr", 40000), tree);
+
+addPersonToBST(new Person("LLLLLLLL", "Kobe", "Bryant"), tree);
+tree.removeValue("MMMMMMMM");
+printBST("test", tree);
+
+
+
+
+
+/*
 // DEMONSTRATE ADDING VALUES TO THE BST, WHICH INCLUDES THE NEED TO MAKE THE BST BIGGER
 addPersonToBST(new Student(tree.generateKey(), "George", "Harrison", 4.0), tree);
 addPersonToBST(new Employee(tree.generateKey(), "Paul", "McCartney", 80000), tree);
@@ -60,4 +128,4 @@ tree.removeValue(cwKey);
 printBST("\nAfter Removing Keith Richards", tree);
 
 tree.removeValue(dgKey);
-printBST("\nAfter Removing Bill Withers", tree);
+printBST("\nAfter Removing Bill Withers", tree);*/
